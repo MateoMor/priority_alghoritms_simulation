@@ -55,13 +55,7 @@ const AlgorithmTable: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <Paper elevation={3} className="p-6 max-w-5xl mx-auto">
-        <Typography
-          variant="h4"
-          component="h2"
-          className="mb-6 text-center font-bold"
-        >
-          Planificador de Procesos por Prioridad
-        </Typography>
+        
 
         <Box className="mb-4 flex flex-wrap gap-3 justify-center">
           <Button

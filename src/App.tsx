@@ -6,7 +6,7 @@ function App() {
   return (
     <Layout 
       title="Algoritmos de Prioridad"
-      githubRepo="https://github.com/tu-usuario/algoritmos-prioridad"
+      githubRepo="https://github.com/MateoMor/priority_alghoritms_simulation"
     >
       <HomePage />
     </Layout>

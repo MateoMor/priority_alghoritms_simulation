@@ -7,4 +7,9 @@ export default defineConfig({
   plugins: [react(),
     tailwindcss(),
   ],
+  base: '/priority_alghoritms_simulation/', // Nombre de tu repositorio
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets'
+  }
 })

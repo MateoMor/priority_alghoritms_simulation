@@ -9,7 +9,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ 
   children, 
   title = "Mi Aplicación React", 
-  githubRepo = "https://github.com/tu-usuario/tu-repo" 
+  githubRepo = "https://github.com/MateoMor/priority_alghoritms_simulation" 
 }) => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 ">

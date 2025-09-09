@@ -24,3 +24,6 @@ export const isValidEmail = (email: string): boolean => {
 export const capitalize = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+export * from './alghoritms';
+export * from './alghoritmStats';

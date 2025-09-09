@@ -1,5 +1,6 @@
 import ReactApexChart from 'react-apexcharts';
 import type { ApexOptions } from 'apexcharts';
+import { algorithmAverageStats } from '../utils/alghoritmStats';
 
 // Interfaz para los datos de entrada
 interface ProcessData {
@@ -12,6 +13,12 @@ interface ProcessData {
 interface GanttDiagramProps {
   data?: ProcessData[];
   title?: string;
+  originalProcesses?: Array<{
+    process: string;
+    rafaga: number;
+    tiempoLlegada: number;
+    prioridad: number;
+  }>;
 }
 
 // Datos por defecto si no se pasan como props
@@ -22,7 +29,7 @@ const defaultData: ProcessData[] = [
 ];
 
 
-export default function GanttDiagram({ data = defaultData, title }: GanttDiagramProps) {
+export default function GanttDiagram({ data = defaultData, title, originalProcesses }: GanttDiagramProps) {
   // Transformar datos para ApexCharts
   const transformDataForApex = (processData: ProcessData[]) => {
     const allSegments: any[] = [];
@@ -124,6 +131,9 @@ export default function GanttDiagram({ data = defaultData, title }: GanttDiagram
 
   const series = transformDataForApex(data);
 
+  // Calcular estadísticas si se proporcionan los procesos originales
+  const stats = originalProcesses ? algorithmAverageStats(data, originalProcesses) : null;
+
   return (
     <div className="w-full max-w-6xl mx-auto p-6">
 
@@ -137,8 +147,19 @@ export default function GanttDiagram({ data = defaultData, title }: GanttDiagram
           height={350} 
         />
         
-        
-         
+        {/* Estadísticas simples debajo del diagrama */}
+        {stats && (
+          <div className="mt-4 flex justify-center gap-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center">
+              <div className="text-lg font-bold text-blue-700">{stats.TS}</div>
+              <div className="text-sm text-blue-600">TS Promedio</div>
+            </div>
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
+              <div className="text-lg font-bold text-green-700">{stats.TE}</div>
+              <div className="text-sm text-green-600">TE Promedio</div>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>

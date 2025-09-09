@@ -22,17 +22,17 @@ const AlgorithmTable: React.FC = () => {
     },
     {
       field: "tiempoEjecucion",
-      headerName: "Raf",
+      headerName: "R",
       type: "number",
       width: 180,
       editable: true,
       headerAlign: "center",
       align: "center",
-      valueFormatter: (value: number) => `${value} ms`,
+      valueFormatter: (value: number) => `${value}`,
     },
     {
       field: "prioridad",
-      headerName: "Prioridad",
+      headerName: "P",
       type: "number",
       width: 120,
       editable: true,
@@ -42,13 +42,13 @@ const AlgorithmTable: React.FC = () => {
     },
     {
       field: "tiempoLlegada",
-      headerName: "Tiempo de Llegada",
+      headerName: "t",
       type: "number",
       width: 160,
       editable: true,
       headerAlign: "center",
       align: "center",
-      valueFormatter: (value: number) => `${value} ms`,
+      valueFormatter: (value: number) => `${value}`,
     },
   ];
 

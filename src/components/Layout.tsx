@@ -46,8 +46,8 @@ const Layout: React.FC<LayoutProps> = ({
       </header>
 
       {/* Main content */}
-      <main className="flex-1 pt-16 px-6 py-8 max-w-full">
-        <div className="max-w-6xl mx-auto">
+      <main className="flex-1 pt-16  py-8 max-w-full">
+        <div>
           {children}
         </div>
       </main>

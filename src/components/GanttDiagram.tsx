@@ -11,6 +11,7 @@ interface ProcessData {
 // Props del componente
 interface GanttDiagramProps {
   data?: ProcessData[];
+  title?: string;
 }
 
 // Datos por defecto si no se pasan como props
@@ -20,7 +21,8 @@ const defaultData: ProcessData[] = [
   { process: "P3", startArray: [7], endArray: [9] }      // P3 ejecuta [7-9]
 ];
 
-export default function GanttDiagram({ data = defaultData }: GanttDiagramProps) {
+
+export default function GanttDiagram({ data = defaultData, title }: GanttDiagramProps) {
   // Transformar datos para ApexCharts
   const transformDataForApex = (processData: ProcessData[]) => {
     const allSegments: any[] = [];
@@ -34,7 +36,7 @@ export default function GanttDiagram({ data = defaultData }: GanttDiagramProps) 
         allSegments.push({
           x: `P${processIndex + 1}`, // Solo P1, P2, P3, etc.
           y: [startArray[i], endArray[i]],
-          fillColor: "#8884d8" // Un solo color para todas las barras
+          fillColor: "#0000ff" // Un solo color para todas las barras
         });
       }
     });
@@ -45,29 +47,6 @@ export default function GanttDiagram({ data = defaultData }: GanttDiagramProps) 
       data: allSegments
     }];
   };
-
-  // Función para generar todos los segmentos de ejecución para la tabla de resumen
-  const getAllExecutionSegments = (processData: ProcessData[]) => {
-    const segments: Array<{process: string, inicio: number, fin: number, duracion: number}> = [];
-    
-    processData.forEach(processItem => {
-      const { process, startArray, endArray } = processItem;
-      
-      for (let i = 0; i < startArray.length && i < endArray.length; i++) {
-        segments.push({
-          process: process,
-          inicio: startArray[i],
-          fin: endArray[i],
-          duracion: endArray[i] - startArray[i]
-        });
-      }
-    });
-    
-    // Ordenar por tiempo de inicio
-    return segments.sort((a, b) => a.inicio - b.inicio);
-  };
-
-  const allSegments = getAllExecutionSegments(data);
 
   // Configuración de opciones para ApexCharts
   const options: ApexOptions = {
@@ -147,6 +126,9 @@ export default function GanttDiagram({ data = defaultData }: GanttDiagramProps) 
 
   return (
     <div className="w-full max-w-6xl mx-auto p-6">
+
+      <h3 className="text-2xl font-bold mb-6 text-center">{title }</h3>
+
       <div className="bg-white rounded-lg shadow-lg p-6">
         <ReactApexChart 
           options={options} 
@@ -155,52 +137,9 @@ export default function GanttDiagram({ data = defaultData }: GanttDiagramProps) 
           height={350} 
         />
         
-        {/* Tabla de resumen debajo del gráfico */}
-        <div className="mt-8">
-          <h4 className="text-lg font-semibold mb-4 text-gray-800">Cronología de Ejecución:</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-            {allSegments.map((segment, index) => (
-              <div 
-                key={index} 
-                className="p-3 rounded-lg border-l-4 bg-gray-50"
-                style={{ borderLeftColor: getColor(segment.process) }}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-gray-800">{segment.process}</span>
-                  <span 
-                    className="w-4 h-4 rounded-full"
-                    style={{ backgroundColor: getColor(segment.process) }}
-                  ></span>
-                </div>
-                <p className="text-sm text-gray-600">
-                  {segment.inicio} → {segment.fin} ({segment.duracion} unidades)
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
+        
+         
 
-        {/* Estadísticas adicionales */}
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-blue-50 p-4 rounded-lg text-center">
-            <h5 className="font-semibold text-blue-800">Total de Procesos</h5>
-            <p className="text-2xl font-bold text-blue-600">
-              {data.length}
-            </p>
-          </div>
-          <div className="bg-green-50 p-4 rounded-lg text-center">
-            <h5 className="font-semibold text-green-800">Tiempo Total</h5>
-            <p className="text-2xl font-bold text-green-600">
-              {Math.max(...allSegments.map(segment => segment.fin))} unidades
-            </p>
-          </div>
-          <div className="bg-purple-50 p-4 rounded-lg text-center">
-            <h5 className="font-semibold text-purple-800">Fragmentos</h5>
-            <p className="text-2xl font-bold text-purple-600">
-              {allSegments.length}
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   );

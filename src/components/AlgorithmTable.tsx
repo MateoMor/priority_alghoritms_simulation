@@ -1,7 +1,7 @@
 import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
-import { Paper, Button, Box, Typography, ThemeProvider } from "@mui/material";
+import { Paper, Button, Box, ThemeProvider } from "@mui/material";
 import { Add, PlayArrow, Clear } from "@mui/icons-material";
 import theme from "../styles/materialStyles";
 import { useProcessStore } from "../store/processStore";

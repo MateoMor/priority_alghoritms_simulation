@@ -1,47 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import type {
-  GridColDef,
-  GridRowsProp,
-} from "@mui/x-data-grid";
+import type { GridColDef } from "@mui/x-data-grid";
 import { Paper, Button, Box, Typography, ThemeProvider } from "@mui/material";
 import { Add, PlayArrow, Clear } from "@mui/icons-material";
 import theme from "../styles/materialStyles";
-
-interface ProcessData {
-  id: number;
-  proceso: string;
-  tiempoEjecucion: number;
-  prioridad: number;
-  tiempoLlegada: number;
-}
+import { useProcessStore } from "../store/processStore";
 
 const AlgorithmTable: React.FC = () => {
-  
-  const [rows, setRows] = useState<GridRowsProp<ProcessData>>([
-    {
-      id: 1,
-      proceso: "P1",
-      tiempoEjecucion: 5,
-      prioridad: 3,
-      tiempoLlegada: 0,
-    },
-    {
-      id: 2,
-      proceso: "P2",
-      tiempoEjecucion: 3,
-      prioridad: 1,
-      tiempoLlegada: 1,
-    },
-    {
-      id: 3,
-      proceso: "P3",
-      tiempoEjecucion: 8,
-      prioridad: 2,
-      tiempoLlegada: 2,
-    },
-  ]);
-
+  // Usar Zustand en lugar del estado local
+  const { rows, addRow, clearAll, updateRow, executeAlgorithm } = useProcessStore();
 
   // Definir las columnas de la tabla
   const columns: GridColDef[] = [
@@ -85,49 +52,6 @@ const AlgorithmTable: React.FC = () => {
     },
   ];
 
-  // Función para agregar una nueva fila
-  const handleAddRow = () => {
-    console.log(rows.length);
-    if (rows.length != 0) {
-      const newId = Math.max(...rows.map((row) => row.id)) + 1;
-      const newRow: ProcessData = {
-        id: newId,
-        proceso: `P${newId}`,
-        tiempoEjecucion: 0,
-        prioridad: 1,
-        tiempoLlegada: 0,
-      };
-      setRows([...rows, newRow]);
-    } else {
-      const newRow: ProcessData = {
-        id: 1,
-        proceso: `P1`,
-        tiempoEjecucion: 0,
-        prioridad: 1,
-        tiempoLlegada: 0,
-      };
-      setRows([newRow]);
-    }
-  };
-
-  // Función para limpiar todos los datos
-  const handleClearAll = () => {
-    setRows([]);
-  };
-
-  // Función para ejecutar el algoritmo
-  const handleExecuteAlgorithm = () => {
-    console.log("Datos de los procesos:", rows);
-    // Aquí puedes implementar la lógica del algoritmo de prioridad
-    alert("Ejecutando algoritmo de prioridad con los datos ingresados!");
-  };
-
-  // Función para manejar la actualización de celdas
-  const handleProcessRowUpdate = (newRow: ProcessData) => {
-    setRows(rows.map((row) => (row.id === newRow.id ? newRow : row)));
-    return newRow;
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <Paper elevation={3} className="p-6 max-w-5xl mx-auto">
@@ -143,7 +67,7 @@ const AlgorithmTable: React.FC = () => {
           <Button
             variant="contained"
             startIcon={<Add />}
-            onClick={handleAddRow}
+            onClick={addRow}
             sx={{
               backgroundColor: "#2563eb",
               "&:hover": { backgroundColor: "#1d4ed8" },
@@ -155,7 +79,7 @@ const AlgorithmTable: React.FC = () => {
           <Button 
             variant="outlined" 
             startIcon={<Clear />}
-            onClick={handleClearAll} 
+            onClick={clearAll} 
             color="warning"
           >
             Limpiar Todo
@@ -164,7 +88,7 @@ const AlgorithmTable: React.FC = () => {
           <Button
             variant="contained"
             startIcon={<PlayArrow />}
-            onClick={handleExecuteAlgorithm}
+            onClick={executeAlgorithm}
             disabled={rows.length === 0}
             sx={{
               backgroundColor: "#16a34a",
@@ -180,7 +104,7 @@ const AlgorithmTable: React.FC = () => {
             rows={rows}
             columns={columns}
             disableRowSelectionOnClick
-            processRowUpdate={handleProcessRowUpdate}
+            processRowUpdate={updateRow}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 10 },

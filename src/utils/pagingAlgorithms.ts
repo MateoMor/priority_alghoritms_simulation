@@ -230,60 +230,6 @@ const mruAlgorithm: AlgorithmRunner = (sequence, frameCount) => {
   return { steps, faults };
 };
 
-const referenceBitAlgorithm: AlgorithmRunner = (sequence, frameCount) => {
-  const frames: Array<PageReference | null> = Array(frameCount).fill(null);
-  const referenceBits: number[] = Array(frameCount).fill(0);
-  const steps: AlgorithmStep[] = [];
-  let pointer = 0;
-  let faults = 0;
-
-  if (frameCount === 0) {
-    return { steps: [], faults: sequence.length };
-  }
-
-  sequence.forEach((reference) => {
-    let fault = false;
-    let replaced: PageReference | null = null;
-    const hitIndex = frames.indexOf(reference);
-
-    if (hitIndex !== -1) {
-      referenceBits[hitIndex] = 1;
-    } else {
-      fault = true;
-      faults += 1;
-
-      while (true) {
-        if (frames[pointer] === null) {
-          frames[pointer] = reference;
-          referenceBits[pointer] = 1;
-          pointer = (pointer + 1) % frameCount;
-          break;
-        }
-
-        if (referenceBits[pointer] === 0) {
-          replaced = frames[pointer];
-          frames[pointer] = reference;
-          referenceBits[pointer] = 1;
-          pointer = (pointer + 1) % frameCount;
-          break;
-        }
-
-        referenceBits[pointer] = 0;
-        pointer = (pointer + 1) % frameCount;
-      }
-    }
-
-    steps.push({
-      reference,
-      frames: cloneFrames(frames),
-      fault,
-      replaced,
-    });
-  });
-
-  return { steps, faults };
-};
-
 const algorithmsCatalog: Array<{
   key: string;
   name: string;
@@ -313,12 +259,6 @@ const algorithmsCatalog: Array<{
     name: "Algoritmo MRU",
     description: "Libera la página utilizada más recientemente.",
     runner: mruAlgorithm,
-  },
-  {
-    key: "reference-bit",
-    name: "Algoritmo de Bit de Referencia",
-    description: "Implementación tipo segunda oportunidad basándose en bits de referencia.",
-    runner: referenceBitAlgorithm,
   },
 ];
 

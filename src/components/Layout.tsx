@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -8,7 +9,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ 
   children, 
-  title = "Mi Aplicación React", 
+  title = "Algortimos", 
   githubRepo = "https://github.com/MateoMor/priority_alghoritms_simulation" 
 }) => {
   return (
@@ -18,7 +19,9 @@ const Layout: React.FC<LayoutProps> = ({
         <div className="flex-row flex items-center h-16 px-6 max-w-full justify-between p-4">
              {/* Title - Center */}
           <div className="flex justify-center">
-            <h1 className="font-bold text-center">{title}</h1>
+            <Link to="/priority_alghoritms_simulation" className="text-white no-underline">
+              <h1 className="font-bold text-center">{title}</h1>
+            </Link>
           </div>
           {/* GitHub Icon - Left */}
           <div className="">

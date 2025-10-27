@@ -25,5 +25,9 @@ export const capitalize = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-export * from './alghoritms';
-export * from './alghoritmStats';
+// Combinar clases de utilidad al estilo shadcn/ui
+export const cn = (
+  ...classes: Array<string | false | null | undefined>
+): string => {
+  return classes.filter((value): value is string => Boolean(value)).join(" ");
+};

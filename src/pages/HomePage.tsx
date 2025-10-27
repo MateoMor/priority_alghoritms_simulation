@@ -1,18 +1,28 @@
-import React from 'react';
-import AlgorithmTable from '../components/AlgorithmTable';
-import GanttResults from '../components/GanttResults';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const HomePage: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="space-y-8 py-10">
-      
-      
-      {/* Tabla principal */}
-      <AlgorithmTable />
-      
-      {/* Resultados de todos los algoritmos */}
-      <GanttResults />
-    
+    <div className="flex flex-col items-center justify-center gap-6 py-10">
+      <h2 className="text-3xl font-semibold text-center">
+        Selecciona el simulador que quieres explorar
+      </h2>
+      <div className="flex flex-col sm:flex-row gap-4">
+        <button
+          className="px-6 py-3 rounded bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+          onClick={() => navigate("/cpu")}
+        >
+          Simulador CPU
+        </button>
+        <button
+          className="px-6 py-3 rounded bg-green-600 text-white hover:bg-green-700 transition-colors"
+          onClick={() => navigate("/memory")}
+        >
+          Simulador Memoria
+        </button>
+      </div>
     </div>
   );
 };
